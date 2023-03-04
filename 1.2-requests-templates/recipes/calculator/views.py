@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.shortcuts import HttpResponse
 
 DATA = {
     'omlet': {
@@ -28,3 +29,11 @@ DATA = {
 #     'ингредиент2': количество2,
 #   }
 # }
+def recipes(request, dish):
+    template_name = 'calculator/index.html'
+    new_dict = {}
+    servings = int(request.GET.get('servings', 1))
+    for ingr, qty in DATA[dish].items():
+        new_dict[ingr] = qty * servings
+    context = {'recipe': new_dict}
+    return render(request, template_name, context)
